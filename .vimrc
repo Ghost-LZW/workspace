@@ -47,12 +47,12 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 let g:airline_theme='papercolor'
 let g:PaperColor_Theme_Options = {
-  \   'theme': {
-  \     'default': {
-  \       'transparent_background': 0
-  \     }
-  \   }
-  \ }
+			\   'theme': {
+			\     'default': {
+			\       'transparent_background': 0
+			\     }
+			\   }
+			\ }
 
 syntax on
 set nu
@@ -81,21 +81,21 @@ set backspace=indent,eol,start
 
 func SkipPair()
 	if getline('.')[col('.') - 1] == ')' || getline('.')[col('.') - 1]  == ']' || getline('.')[col('.') - 1] == '"' || getline('.')[col('.') - 1] == "'" || getline('.')[col('.') - 1] == '}' || getline('.')[col('.') - 1] == '>'
-	return "\<ESC>la"
+		return "\<ESC>la"
 	else 
-	return "\t"
+		return "\t"
 	endif
 endfunc
 
 func BackPair()
 	if (getline('.')[col('.') - 1] == ')' && getline('.')[col('.')-2] == '(') || (getline('.')[col('.') - 1]  == ']' && getline('.')[col('.') - 2]  == '[') || (getline('.')[col('.') - 1] == '"' && getline('.')[col('.') - 2]  == '"') || (getline('.')[col('.') - 1] == "'" && getline('.')[col('.') - 2]  == "'") || (getline('.')[col('.') - 1] == '}' && getline('.')[col('.') - 2]  == '{') || (getline('.')[col('.') - 1] == '>' && getline('.')[col('.') - 2]  == '<')
-	if strchars(getline('.')) == col('.')
-		return "\<ESC>xxa"
+		if strchars(getline('.')) == col('.')
+			return "\<ESC>xxa"
+		else
+			return "\<ESC>xxi"
+		endif
 	else
-		return "\<ESC>xxi"
-	endif
-	else
-	return nr2char(8) 
+		return nr2char(8) 
 	endif
 endfunc
 
@@ -106,30 +106,30 @@ map <F9> : call CR()<CR>
 func! CR()
 	if &filetype == 'cpp'
 		exec "w"
-		exec "!g++ % -O2 -Wall -std=c++14 -D DEBUG -o %<"
+		exec "!g++ % -O2 -Wall -std=c++20 -D DEBUG -o %<"
 		exec "! ./%< && rm ./%<"
 	endif
 	if &filetype == 'python'
 		exec "w"
 		exec "!python3 %"
-  endif
+	endif
 	if &filetype == 'sh'
 		exec "w"
 		exec "!bash %"
-  endif
+	endif
 endfunc
 
 map <F8> : call CRR()<CR>
 func! CRR()
 	if &filetype == 'cpp'
 		exec "w"
-		exec "!g++ % -O2 -Wall -std=c++17 -D DEBUG -o %<"
+		exec "!g++ % -O2 -Wall -std=c++20 -D DEBUG -o %<"
 		exec "! ./%< < in1.txt && rm ./%<"
 	endif
 	if &filetype == 'python'
 		exec "w"
 		exec "!python3 %"
-    endif
+	endif
 endfunc
 
 map <F3> :YcmCompleter FixIt<CR>
@@ -138,58 +138,54 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py,*.cc exec ":call SetTitle()"
 autocmd BufReadPre *.py exec "set expandtab"
 autocmd BufReadPre *.py exec "set softtabstop=4"
 
-""定义函数SetTitle，自动插入文件头 
-
 func SetTitle()
-        "如果文件类型为.sh文件
-        if &filetype == 'sh' || &filetype == 'python'
-                  call setline(1,"\#########################################################################")
-            ""call append(line("."), "\# File Name: ".expand("%"))
-                  call append(line("."), "\# Author: Zongwei Lan (lanzongwei541@gmail.com)")
-      call append(line(".")+1, "\# mail: lanzongwei541@gmail.com")
-      ""call append(line(".")+3, "\# Created Time: ".strftime("%c"))
-      call append(line(".")+2, "\#########################################################################")
-      if &filetype == 'python'
-        call append(line(".")+3, "\#!/bin/python3")
-      else
-        call append(line(".")+3, "\#!/bin/bash")
-      endif
-      call append(line(".")+4, "")
-        elseif &filetype != 'python'
-        call setline(1, "// Copyright 2022 Zongwei Lan. All rights reserved.")
-        ""call append(line("."), "// File Name: ".expand("%"))
-        call append(line("."), "// Author: Zongwei Lan (lanzongwei541@gmail.com)")
-        ""call append(line(".")+2, "// Created Time: ".strftime("%c"))
-        call append(line(".")+1, "")
-    endif
-    if &filetype == 'c'
-       call append(line(".")+2, "#include<stdio.h>")
-       call append(line(".")+3, "")
-    endif
-    if &filetype == 'python'
-        exec "set expandtab"
-        exec "set softtabstop=4"
-    endif
-   "新建文件后，自动定位到文件末尾
-    autocmd BufNewFile * normal G
+	if &filetype == 'sh' || &filetype == 'python'
+		call setline(1,"\#########################################################################")
+		""call append(line("."), "\# File Name: ".expand("%"))
+		call append(line("."), "\# Author: Zongwei Lan (lanzongwei541@gmail.com)")
+		call append(line(".")+1, "\# mail: lanzongwei541@gmail.com")
+		""call append(line(".")+3, "\# Created Time: ".strftime("%c"))
+		call append(line(".")+2, "\#########################################################################")
+		if &filetype == 'python'
+			call append(line(".")+3, "\#!/bin/python3")
+		else
+			call append(line(".")+3, "\#!/bin/bash")
+		endif
+		call append(line(".")+4, "")
+	elseif &filetype != 'python'
+		call setline(1, "// Copyright 2022 Zongwei Lan. All rights reserved.")
+		""call append(line("."), "// File Name: ".expand("%"))
+		call append(line("."), "// Author: Zongwei Lan (lanzongwei541@gmail.com)")
+		""call append(line(".")+2, "// Created Time: ".strftime("%c"))
+		call append(line(".")+1, "")
+	endif
+	if &filetype == 'c'
+		call append(line(".")+2, "#include<stdio.h>")
+		call append(line(".")+3, "")
+	endif
+	if &filetype == 'python'
+		exec "set expandtab"
+		exec "set softtabstop=4"
+	endif
+	autocmd BufNewFile * normal G
 endfunc
 
 let g:copy_file=$HOME . "/.vim_copybuffer"
 function Write_copy_file()
-let lines=split(@", "\n")
-call writefile(lines,g:copy_file)
+	let lines=split(@", "\n")
+	call writefile(lines,g:copy_file)
 endfunction
 
 function Read_copy_file()
-let l:buf=readfile(g:copy_file)
-let @"=join(l:buf,"\n")
-normal ""p
+	let l:buf=readfile(g:copy_file)
+	let @"=join(l:buf,"\n")
+	normal ""p
 endfunction
 nmap <silent> ;y :call Write_copy_file()<Enter>
 nmap <silent> ;p :call Read_copy_file()<Enter>
 
 augroup filetype
-    autocmd! BufRead,BufNewFile BUILD set filetype=blade
+	autocmd! BufRead,BufNewFile BUILD set filetype=blade
 augroup end
 set hlsearch
 
@@ -198,7 +194,7 @@ set pastetoggle=<F12>
 " Let clangd fully control code completion
 let g:ycm_clangd_uses_ycmd_caching = 0
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = exepath("clangd-15")
+let g:ycm_clangd_binary_path = exepath("clangd")
 
 let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
+" let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
