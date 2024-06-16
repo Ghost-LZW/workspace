@@ -1,0 +1,19 @@
+# https://stackoverflow.com/a/32675322
+# make complete better
+_reallyforcefilecompletion() {
+    local prefix_char
+
+    for prefix_char in ' ' $'\t' '=' '+' '-' "'" '"' ')' ':'; do
+        if [[ "$PREFIX" = *${prefix_char}* ]]; then
+            if [[ "$PREFIX" = *[\'\"]* ]]; then
+                compset -q -P "*${prefix_char}"
+            else
+                compset -P "*${prefix_char}"
+            fi
+            _value
+            break
+        fi
+    done
+}
+
+zstyle ':completion:*' completer _complete _reallyforcefilecompletion
